@@ -1,57 +1,20 @@
-/* --- GLOBAL STYLES --- */
+/* --- GLOBAL --- */
 body {
-    background-color: #121212; /* Deep Premium Black */
-    color: #e0e0e0;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #121212;
+    color: #fff;
+    font-family: sans-serif;
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Prevents side scrolling */
 }
 
-/* --- NAVBAR --- */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 5%;
-    background-color: #121212;
-    border-bottom: 1px solid #333;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: #fff;
-    text-transform: uppercase;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 30px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: #aaa;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.nav-links a:hover {
-    color: #fff;
-}
-
-/* --- HERO SLIDER (With Transitions) --- */
+/* --- HERO SECTION --- */
 .hero {
-    position: relative;
-    height: 80vh; /* Takes up 80% of screen height */
+    position: relative; /* This is crucial for buttons to stay inside */
+    height: 60vh; /* Reduced height so you can see grid below on phone */
     display: flex;
-    align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at center, #1f1f1f 0%, #121212 100%);
+    align-items: center;
+    background-color: #000;
     overflow: hidden;
 }
 
@@ -64,174 +27,64 @@ body {
 }
 
 .hero-image-container img {
-    max-width: 80%;
-    max-height: 90%;
-    object-fit: contain; /* Ensures the whole image is visible */
-    border-radius: 8px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-    /* The Preferred Transition Effect */
-    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-    opacity: 1;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s ease; /* Smooth fade effect */
 }
 
-/* Slider Buttons */
+/* --- HIGH VISIBILITY BUTTONS --- */
 .slider-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: white;
-    font-size: 2rem;
-    padding: 20px;
-    cursor: pointer;
-    z-index: 10;
+    width: 50px;
+    height: 50px;
+    background-color: white; /* SOLID WHITE - Can't miss it */
+    color: black;
     border-radius: 50%;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.slider-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-50%) scale(1.1);
-}
-
-.prev { left: 20px; }
-.next { right: 20px; }
-
-/* Caption */
-.hero-caption {
-    text-align: center;
-    padding: 30px;
-    background-color: #121212;
-}
-
-.hero-caption h3 {
-    font-weight: 300;
-    letter-spacing: 1px;
-    color: #fff;
-}
-
-/* --- PORTFOLIO GRID --- */
-.portfolio-section {
-    padding: 40px 5%;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.section-label {
-    font-size: 0.85rem;
-    color: #666;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    border-left: 3px solid #fff;
-    padding-left: 10px;
-}
-
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-}
-
-/* Cards with Hover Effects */
-.portfolio-card {
-    background-color: #1e1e1e;
-    border-radius: 8px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
-}
-
-.portfolio-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-}
-
-.portfolio-card img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    display: block;
-    transition: opacity 0.3s ease;
-}
-
-.portfolio-card:hover img {
-    opacity: 0.9;
-}
-
-.card-text {
-    padding: 20px;
-    font-size: 0.95rem;
-    color: #ccc;
-    border-top: 1px solid #333;
-}
-
-/* --- LIGHTBOX (Full Screen Zoom) --- */
-#lightbox {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
+    display: flex; /* Centers the arrow icon */
     justify-content: center;
     align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    cursor: pointer;
+    z-index: 100; /* Forces it to be ON TOP of the image */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    font-size: 20px;
 }
 
-#lightbox.active {
-    display: flex;
-    opacity: 1;
+.prev-btn { left: 15px; }
+.next-btn { right: 15px; }
+
+/* Active press effect */
+.slider-btn:active {
+    background-color: #ccc; 
+    transform: translateY(-50%) scale(0.9);
 }
 
-#lightbox-img {
-    max-width: 90%;
-    max-height: 90%;
-    border: 2px solid #fff;
-    box-shadow: 0 0 50px rgba(255,255,255,0.1);
-    transform: scale(0.9);
-    transition: transform 0.3s ease;
-}
+/* --- REST OF STYLES --- */
+.hero-caption { text-align: center; padding: 20px; color: #aaa; }
+.navbar { padding: 20px; background: #1a1a1a; display: flex; justify-content: space-between; }
+.logo { font-weight: bold; font-size: 1.2rem; }
+.nav-links { list-style: none; display: none; } /* Hidden on mobile for simplicity */
 
-#lightbox.active #lightbox-img {
-    transform: scale(1);
+.portfolio-section { padding: 20px; }
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 Columns on mobile */
+    gap: 10px;
 }
+.portfolio-card img { width: 100%; border-radius: 5px; }
 
+/* LIGHTBOX */
+#lightbox {
+    display: none; position: fixed; top: 0; left: 0; 
+    width: 100%; height: 100%; background: rgba(0,0,0,0.95);
+    justify-content: center; align-items: center; z-index: 999;
+}
+#lightbox.active { display: flex; }
+#lightbox-img { max-width: 90%; max-height: 90%; border: 2px solid white; }
 #close-lightbox {
-    position: absolute;
-    top: 20px;
-    right: 40px;
-    color: #fff;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
+    position: absolute; top: 20px; right: 30px; 
+    font-size: 40px; color: white; cursor: pointer;
 }
-
-/* --- FOOTER --- */
-footer {
-    padding: 50px;
-    text-align: center;
-    color: #666;
-    margin-top: 50px;
-    border-top: 1px solid #222;
-}
-
-.social-icons {
-    margin-bottom: 20px;
-}
-
-.social-icons i {
-    font-size: 1.5rem;
-    margin: 0 15px;
-    color: #fff;
-    transition: color 0.3s ease;
-    cursor: pointer;
-}
-
-.social-icons i:hover {
-    color: #ff4757; /* Accent color on hover */
-    }
+footer { text-align: center; padding: 40px; color: #555; }
