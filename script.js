@@ -1,6 +1,6 @@
 // List of your uploaded images
 const images = [
-    'render0.jpg'
+    'render0.jpg',
     'render1.jpg',
     'render2.jpg',
     'render3.jpg',
