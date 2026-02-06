@@ -1,25 +1,27 @@
-// Create the lightbox elements dynamically
-const lightbox = document.createElement('div');
-lightbox.id = 'lightbox';
-document.body.appendChild(lightbox);
+// List of your uploaded images
+const images = [
+    'render0.jpg'
+    'render1.jpg',
+    'render2.jpg',
+    'render3.jpg',
+    'render4.jpg',
+    'render5.jpg'
+];
 
-const images = document.querySelectorAll('.gallery img');
+let currentIndex = 2; // Start with render3 (the blue one looks good as Hero)
+const heroImg = document.getElementById('hero-img');
 
-images.forEach(image => {
-    image.addEventListener('click', e => {
-        lightbox.style.display = 'flex';
-        const img = document.createElement('img');
-        img.src = image.src;
-        // Clear old image before adding new one
-        while (lightbox.firstChild) {
-            lightbox.removeChild(lightbox.firstChild);
-        }
-        lightbox.appendChild(img);
-    });
-});
+function changeSlide(direction) {
+    // Calculate new index
+    currentIndex += direction;
 
-// Close lightbox when clicking outside the image
-lightbox.addEventListener('click', e => {
-    if (e.target !== e.currentTarget) return;
-    lightbox.style.display = 'none';
-});
+    // Loop back to start if at end, or go to end if at start
+    if (currentIndex >= images.length) {
+        currentIndex = 0;
+    } else if (currentIndex < 0) {
+        currentIndex = images.length - 1;
+    }
+
+    // Update the image source
+    heroImg.src = images[currentIndex];
+}
