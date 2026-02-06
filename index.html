@@ -3,38 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BSA Productions | Portfolio</title>
+    <title>BSA 3D ART</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <header class="portfolio-header">
-        <div class="profile-info">
-            <div class="profile-pic">
-                <img src="https://via.placeholder.com/80" alt="BSA">
-            </div>
-            <div class="profile-text">
-                <h1>BSA Productions</h1>
-                <p>3D Artist | Anime Creator | Tech Enthusiast</p>
-                <div class="header-buttons">
-                    <a href="mailto: bhaveshahire14700@gmail.com" class="btn-primary">Work with me</a>
-                    <button class="btn-secondary">Follow</button>
-                </div>
-            </div>
-        </div>
-    </header>
+    <nav class="navbar">
+        <div class="logo">BSA 3D ART</div>
+        <ul class="nav-links">
+            <li><a href="#">PORTFOLIO</a></li>
+            <li><a href="#">ABOUT</a></li>
+            <li><a href="#">CONTACT</a></li>
+        </ul>
+    </nav>
 
-    <main>
-        <h2 class="section-title">Featured 3D Renders</h2>
-        <div class="gallery">
-            <div class="card"><img src="render1.jpg" alt="Perfume Model 1"></div>
-            <div class="card"><img src="render2.jpg" alt="Perfume Model 2"></div>
-            <div class="card"><img src="render3.jpg" alt="Perfume Model 3"></div>
-            <div class="card"><img src="render4.jpg" alt="Perfume Model 4"></div>
-            <div class="card"><img src="render5.jpg" alt="Perfume Model 5"></div>
+    <section class="hero">
+        <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
+        <div class="hero-image-container">
+            <img src="render3.jpg" id="hero-img" alt="Featured 3D Art">
         </div>
-        
-        <h2 class="section-title">The Swap - Official Episode</h2>
+        <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
+    </section>
+
+    <div class="hero-caption">
+        <h3>High-Quality 3D Product Visualization</h3>
+    </div>
+
+    <section class="portfolio-section">
+        <h4 class="section-label">FEATURED WORK</h4>
+        <div class="grid-container">
+            <div class="portfolio-card">
+                <img src="render1.jpg" alt="Perfume Concept">
+                <div class="card-text">Perfume Bottle Concepts</div>
+            </div>
+            <div class="portfolio-card">
+                <img src="render2.jpg" alt="Perfume Concept">
+                <div class="card-text">Perfume Bottle Concepts</div>
+            </div>
+            <div class="portfolio-card">
+                <img src="render3.jpg" alt="Perfume Concept">
+                <div class="card-text">Perfume Bottle Concepts</div>
+            </div>
+            <div class="portfolio-card">
+                <img src="render4.jpg" alt="Perfume Concept">
+                <div class="card-text">Perfume Bottle Concepts</div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="social-icons">
+            <i class="fab fa-facebook-f"></i>
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-twitter"></i> <i class="fab fa-youtube"></i>
+        </div>
+        <div class="footer-email">
+            bhaveshahire14700@gmail.com
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>        <h2 class="section-title">The Swap - Official Episode</h2>
         <div class="video-container">
             <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
         </div>
