@@ -1,10 +1,11 @@
-/* --- DARK STUDIO THEME --- */
+/* --- GLOBAL STYLES --- */
 body {
-    background-color: #1a1a1a; /* Dark Grey Background */
-    color: #ffffff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212; /* Deep Premium Black */
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
+    overflow-x: hidden; /* Prevents side scrolling */
 }
 
 /* --- NAVBAR --- */
@@ -12,14 +13,17 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    background-color: #1a1a1a;
+    padding: 20px 5%;
+    background-color: #121212;
+    border-bottom: 1px solid #333;
 }
 
 .logo {
     font-size: 1.5rem;
-    font-weight: bold;
-    letter-spacing: 1px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+    text-transform: uppercase;
 }
 
 .nav-links {
@@ -30,124 +34,204 @@ body {
 
 .nav-links a {
     text-decoration: none;
-    color: #b3b3b3; /* Softer white for links */
+    color: #aaa;
     font-size: 0.9rem;
     font-weight: 500;
-    letter-spacing: 1px;
+    transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
     color: #fff;
-    border-bottom: 1px solid #fff;
 }
 
-/* --- HERO SLIDER --- */
+/* --- HERO SLIDER (With Transitions) --- */
 .hero {
     position: relative;
+    height: 80vh; /* Takes up 80% of screen height */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px 10px 20px;
-    background: radial-gradient(circle, #2a2a2a 0%, #1a1a1a 100%);
+    background: radial-gradient(circle at center, #1f1f1f 0%, #121212 100%);
+    overflow: hidden;
+}
+
+.hero-image-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .hero-image-container img {
-    max-height: 500px; /* Limits height so it fits nicely like the reference */
-    width: auto;
-    max-width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.slider-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 2rem;
-    cursor: pointer;
-    padding: 0 20px;
-    opacity: 0.5;
-}
-
-.slider-btn:hover {
+    max-width: 80%;
+    max-height: 90%;
+    object-fit: contain; /* Ensures the whole image is visible */
+    border-radius: 8px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    /* The Preferred Transition Effect */
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
     opacity: 1;
 }
 
+/* Slider Buttons */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    padding: 20px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.slider-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev { left: 20px; }
+.next { right: 20px; }
+
+/* Caption */
 .hero-caption {
     text-align: center;
-    padding-bottom: 40px;
+    padding: 30px;
+    background-color: #121212;
 }
 
 .hero-caption h3 {
-    font-weight: 400;
-    font-size: 1.2rem;
-    letter-spacing: 0.5px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: #fff;
 }
 
 /* --- PORTFOLIO GRID --- */
 .portfolio-section {
-    padding: 20px 40px;
-    max-width: 1200px;
+    padding: 40px 5%;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
 .section-label {
-    font-size: 0.9rem;
-    color: #b3b3b3;
-    margin-bottom: 20px;
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 30px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    border-left: 3px solid #fff;
+    padding-left: 10px;
 }
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive Grid */
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
 }
 
+/* Cards with Hover Effects */
 .portfolio-card {
-    background-color: #262626; /* Slightly lighter card bg */
-    border: 1px solid #333;
-    border-radius: 4px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
 }
 
 .portfolio-card:hover {
-    transform: translateY(-5px);
-    border-color: #555;
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
 }
 
 .portfolio-card img {
     width: 100%;
-    height: 250px;
+    height: 300px;
     object-fit: cover;
     display: block;
+    transition: opacity 0.3s ease;
+}
+
+.portfolio-card:hover img {
+    opacity: 0.9;
 }
 
 .card-text {
-    padding: 15px;
-    font-size: 0.9rem;
-    color: #e0e0e0;
+    padding: 20px;
+    font-size: 0.95rem;
+    color: #ccc;
+    border-top: 1px solid #333;
+}
+
+/* --- LIGHTBOX (Full Screen Zoom) --- */
+#lightbox {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#lightbox.active {
+    display: flex;
+    opacity: 1;
+}
+
+#lightbox-img {
+    max-width: 90%;
+    max-height: 90%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 50px rgba(255,255,255,0.1);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+#lightbox.active #lightbox-img {
+    transform: scale(1);
+}
+
+#close-lightbox {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 /* --- FOOTER --- */
 footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 40px;
+    padding: 50px;
+    text-align: center;
+    color: #666;
     margin-top: 50px;
-    border-top: 1px solid #333;
-    font-size: 0.9rem;
+    border-top: 1px solid #222;
+}
+
+.social-icons {
+    margin-bottom: 20px;
 }
 
 .social-icons i {
-    margin-right: 20px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    margin: 0 15px;
+    color: #fff;
+    transition: color 0.3s ease;
     cursor: pointer;
 }
 
 .social-icons i:hover {
-    color: #ccc;
+    color: #ff4757; /* Accent color on hover */
     }
