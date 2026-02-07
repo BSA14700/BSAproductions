@@ -1,73 +1,53 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
     
-    // --- 1. HERO SLIDER LOGIC ---
-    const images = [
-        'render0.jpg', 
-        'render1.jpg', 
-        'render2.jpg', 
-        'render3.jpg', 
-        'render4.jpg', 
-        'render5.jpg'
-    ];
-    
-    let currentIndex = 0;
-    const heroImg = document.getElementById('hero-img');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    // --- Image Comparison Slider Logic ---
+    const comparisonContainer = document.querySelector('.comparison-container');
+    const topImageWrapper = document.querySelector('.comp-img-top-wrapper');
+    const topImage = document.querySelector('.comp-img-top');
+    const handle = document.querySelector('.slider-handle');
 
-    function updateHeroImage(index) {
-        // Fade out
-        heroImg.style.opacity = '0';
-        heroImg.style.transform = 'scale(0.95)';
+    if(comparisonContainer) {
         
-        setTimeout(() => {
-            heroImg.src = images[index];
-            // Fade in
-            heroImg.style.opacity = '1';
-            heroImg.style.transform = 'scale(1)';
-        }, 300); // Matches CSS transition time
+        // Helper to sync inner image width with container width
+        const syncImageWidth = () => {
+            const rect = comparisonContainer.getBoundingClientRect();
+            // Force the inner image to exactly match the container width
+            // This prevents the "squishing" effect when resizing the wrapper
+            topImage.style.width = rect.width + "px";
+        };
+
+        const moveSlider = (e) => {
+            const rect = comparisonContainer.getBoundingClientRect();
+            // Calculate X position relative to container
+            let x = e.clientX - rect.left;
+            
+            // Constrain
+            if (x < 0) x = 0;
+            if (x > rect.width) x = rect.width;
+
+            // Percentage
+            const percentage = (x / rect.width) * 100;
+
+            // Apply
+            topImageWrapper.style.width = percentage + "%";
+            handle.style.left = percentage + "%";
+        };
+
+        // Listeners
+        comparisonContainer.addEventListener('mousemove', moveSlider);
+        
+        // Ensure image size is correct on load and resize
+        window.addEventListener('resize', syncImageWidth);
+        syncImageWidth(); // Run immediately
     }
 
-    if(prevBtn && nextBtn) {
-        prevBtn.addEventListener('click', () => {
-            currentIndex--;
-            if (currentIndex < 0) currentIndex = images.length - 1;
-            updateHeroImage(currentIndex);
+    // --- Smooth Scroll ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
         });
-
-        nextBtn.addEventListener('click', () => {
-            currentIndex++;
-            if (currentIndex >= images.length) currentIndex = 0;
-            updateHeroImage(currentIndex);
-        });
-    }
-
-    // --- 2. LIGHTBOX (ZOOM) LOGIC ---
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const closeBtn = document.getElementById('close-lightbox');
-    
-    // Select all images inside portfolio cards
-    const gridImages = document.querySelectorAll('.portfolio-card img');
-
-    gridImages.forEach(img => {
-        img.addEventListener('click', (e) => {
-            // Set the lightbox image source to the clicked image
-            lightboxImg.src = e.target.src;
-            // Show the lightbox
-            lightbox.classList.add('active');
-        });
-    });
-
-    // Close lightbox when clicking X
-    closeBtn.addEventListener('click', () => {
-        lightbox.classList.remove('active');
-    });
-
-    // Close lightbox when clicking outside the image (the dark background)
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-            lightbox.classList.remove('active');
-        }
     });
 });
