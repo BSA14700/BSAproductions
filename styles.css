@@ -1,90 +1,276 @@
-/* --- GLOBAL --- */
+:root {
+    --bg-color: #050505;
+    --bg-secondary: #121212;
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1aa;
+    --accent: #ffffff; 
+    --font-main: 'Inter', sans-serif;
+    --max-width: 1200px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-    background-color: #121212;
-    color: #fff;
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
-/* --- HERO SECTION --- */
-.hero {
-    position: relative; /* This is crucial for buttons to stay inside */
-    height: 60vh; /* Reduced height so you can see grid below on phone */
+a { text-decoration: none; color: inherit; transition: 0.3s; }
+ul { list-style: none; }
+
+/* --- Typography --- */
+h1 { font-size: 3rem; font-weight: 800; letter-spacing: -1px; line-height: 1.2; margin-bottom: 1.5rem; }
+h2 { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 1rem; }
+h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+p { color: var(--text-secondary); font-size: 1rem; }
+
+/* --- Navigation --- */
+.navbar {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    background-color: #000;
-    overflow: hidden;
-}
-
-.hero-image-container {
+    padding: 20px 5%;
+    position: fixed;
     width: 100%;
-    height: 100%;
+    top: 0;
+    z-index: 1000;
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase; }
+.dot { color: var(--text-secondary); }
+
+.nav-links { display: flex; gap: 30px; align-items: center; }
+.nav-links a { font-size: 0.9rem; font-weight: 500; }
+.nav-links a:hover { color: var(--text-primary); }
+
+.btn-nav {
+    border: 1px solid var(--text-primary);
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.btn-nav:hover { background: var(--text-primary); color: var(--bg-color); }
+
+/* --- Hero Section --- */
+.hero {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    opacity: 0.6; /* Slight fade on background image/video */
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(5,5,5,0.3), rgba(5,5,5,1)); /* Fade to black at bottom */
+    z-index: -1;
+}
+
+.hero-content { max-width: 800px; padding: 0 20px; margin-top: 50px;}
+
+.btn-primary {
+    display: inline-block;
+    background: var(--text-primary);
+    color: var(--bg-color);
+    padding: 15px 40px;
+    margin-top: 30px;
+    font-weight: 700;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+.btn-primary:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+/* --- Tech Stack --- */
+.tech-stack {
+    background: var(--bg-color);
+    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 30px;
+    border-bottom: 1px solid #222;
+    border-top: 1px solid #222;
 }
+.tech-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; margin: 0; opacity: 0.6; }
+.tech-icons { display: flex; gap: 20px; align-items: center; color: var(--text-secondary); font-size: 1.1rem; }
 
-.hero-image-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    transition: opacity 0.3s ease; /* Smooth fade effect */
-}
+/* --- General Section Layout --- */
+.section { padding: 100px 5%; max-width: var(--max-width); margin: 0 auto; }
+.section-header { margin-bottom: 50px; }
 
-/* --- HIGH VISIBILITY BUTTONS --- */
-.slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
-    background-color: white; /* SOLID WHITE - Can't miss it */
-    color: black;
-    border-radius: 50%;
-    display: flex; /* Centers the arrow icon */
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    z-index: 100; /* Forces it to be ON TOP of the image */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    font-size: 20px;
-}
-
-.prev-btn { left: 15px; }
-.next-btn { right: 15px; }
-
-/* Active press effect */
-.slider-btn:active {
-    background-color: #ccc; 
-    transform: translateY(-50%) scale(0.9);
-}
-
-/* --- REST OF STYLES --- */
-.hero-caption { text-align: center; padding: 20px; color: #aaa; }
-.navbar { padding: 20px; background: #1a1a1a; display: flex; justify-content: space-between; }
-.logo { font-weight: bold; font-size: 1.2rem; }
-.nav-links { list-style: none; display: none; } /* Hidden on mobile for simplicity */
-
-.portfolio-section { padding: 20px; }
-.grid-container {
+/* --- Portfolio Grid --- */
+.portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 Columns on mobile */
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
 }
-.portfolio-card img { width: 100%; border-radius: 5px; }
 
-/* LIGHTBOX */
-#lightbox {
-    display: none; position: fixed; top: 0; left: 0; 
-    width: 100%; height: 100%; background: rgba(0,0,0,0.95);
-    justify-content: center; align-items: center; z-index: 999;
+.project-card { margin-bottom: 20px; }
+.project-card img {
+    width: 100%;
+    border-radius: 4px;
+    display: block;
+    margin-bottom: 15px;
+    transition: transform 0.3s;
 }
-#lightbox.active { display: flex; }
-#lightbox-img { max-width: 90%; max-height: 90%; border: 2px solid white; }
-#close-lightbox {
-    position: absolute; top: 20px; right: 30px; 
-    font-size: 40px; color: white; cursor: pointer;
+
+/* --- The Comparison Slider CSS --- */
+.comparison-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    cursor: col-resize;
+    user-select: none;
 }
-footer { text-align: center; padding: 40px; color: #555; }
+
+/* Specific aspect ratio for your perfume bottles (Square 1:1) */
+.square-aspect {
+    aspect-ratio: 1 / 1; 
+}
+
+.comp-img-bottom {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+
+.comp-img-top-wrapper {
+    position: absolute;
+    top: 0; left: 0;
+    width: 50%; /* Start at 50% */
+    height: 100%;
+    overflow: hidden;
+    border-right: 2px solid var(--accent);
+    z-index: 10;
+}
+
+.comp-img-top {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    /* Important: Set width to container width so image doesn't squish */
+    width: 100%; 
+    min-width: 100%; /* Ensures it fills width even inside cropped wrapper */
+    object-fit: cover;
+}
+
+.slider-handle {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.handle-circle {
+    background: var(--accent);
+    color: var(--bg-color);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+/* --- Services --- */
+.services-bg { background-color: var(--bg-color); border-top: 1px solid #1a1a1a; }
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+.service-card {
+    background: var(--bg-secondary);
+    padding: 30px;
+    border-radius: 6px;
+    border: 1px solid #222;
+    transition: 0.3s;
+}
+.service-card:hover { border-color: #555; background: #1a1a1a; }
+.service-card i { font-size: 1.8rem; margin-bottom: 20px; color: var(--text-primary); }
+
+/* --- Footer & Form --- */
+footer {
+    background: var(--bg-secondary);
+    padding: 80px 5% 40px;
+    border-top: 1px solid #222;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.footer-left h2 { font-size: 2rem; margin-bottom: 20px; }
+.email-link a { color: var(--text-primary); font-size: 1.1rem; border-bottom: 1px solid #444; padding-bottom: 2px; }
+.email-link a:hover { border-color: #fff; }
+
+.hardware-note {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-top: 20px;
+    font-family: monospace;
+}
+
+.contact-form { display: flex; flex-direction: column; gap: 15px; }
+.contact-form input, .contact-form select, .contact-form textarea {
+    background: var(--bg-color);
+    border: 1px solid #333;
+    padding: 15px;
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    border-radius: 4px;
+    font-size: 1rem;
+}
+.contact-form input:focus, .contact-form textarea:focus {
+    outline: none; border-color: var(--text-primary);
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 60px;
+    font-size: 0.8rem;
+    color: #444;
+}
+
+/* --- Mobile --- */
+@media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    .footer-content { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+}
