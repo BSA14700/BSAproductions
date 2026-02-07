@@ -3,66 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BSA 3D ART</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>BSA Production | 3D Visualization by Bhavesh Ahire</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- Navigation -->
     <nav class="navbar">
-        <div class="logo">BSA 3D ART</div>
+        <div class="logo">BSA PRODUCTION<span class="dot">.</span></div>
         <ul class="nav-links">
-            <li><a href="#">PORTFOLIO</a></li>
-            <li><a href="#">ABOUT</a></li>
-            <li><a href="#">CONTACT</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact" class="btn-nav">Get a Quote</a></li>
         </ul>
     </nav>
 
-    <section class="hero">
+    <!-- Hero Section -->
+    <header class="hero">
+        <!-- Background Video Loop -->
+        <video autoplay muted loop playsinline class="hero-video" poster="assets/slider-final.jpg">
+            <source src="assets/hero-loop.mp4" type="video/mp4">
+            <!-- Fallback image if video is missing -->
+            <img src="assets/slider-final.jpg" alt="3D Product Render">
+        </video>
         
-        <div class="slider-btn prev-btn" id="prevBtn">
-            <i class="fas fa-chevron-left"></i>
-        </div>
-
-        <div class="slider-btn next-btn" id="nextBtn">
-            <i class="fas fa-chevron-right"></i>
-        </div>
+        <div class="hero-overlay"></div>
         
-        <div class="hero-image-container">
-            <img src="render0.jpg" id="hero-img" alt="Featured 3D Art">
+        <div class="hero-content">
+            <h1>Hyper-realistic 3D Product Visualization<br>for E-commerce & Advertising.</h1>
+            <p>Turning CAD data and sketches into photorealistic market-ready assets.</p>
+            <a href="#contact" class="btn-primary">Start Project</a>
         </div>
+    </header>
 
+    <!-- Tech Stack -->
+    <section class="tech-stack">
+        <p class="tech-label">POWERED BY</p>
+        <div class="tech-icons">
+            <i class="fa-solid fa-cube" title="Blender 3D"></i>
+            <i class="fa-solid fa-layer-group" title="Adobe Suite"></i>
+            <i class="fa-solid fa-microchip" title="RTX Workstation"></i>
+            <span>Cycles / Eevee</span>
+        </div>
     </section>
 
-    <div class="hero-caption">
-        <h3>High-Quality 3D Product Visualization</h3>
-    </div>
+    <!-- Portfolio Section -->
+    <section id="work" class="section">
+        <div class="section-header">
+            <h2>Selected Works</h2>
+            <p>Case studies in lighting, texturing, and composition.</p>
+        </div>
 
-    <section class="portfolio-section">
-        <h4 class="section-label">FEATURED WORK</h4>
-        <div class="grid-container">
-            <div class="portfolio-card"><img src="render0.jpg"></div>
-            <div class="portfolio-card"><img src="render1.jpg"></div>
-            <div class="portfolio-card"><img src="render2.jpg"></div>
-            <div class="portfolio-card"><img src="render3.jpg"></div>
-            <div class="portfolio-card"><img src="render4.jpg"></div>
-            <div class="portfolio-card"><img src="render5.jpg"></div>
+        <div class="portfolio-grid">
+            
+            <!-- Project 1: The Slider (Using your Perfume Bottles) -->
+            <div class="project-card featured">
+                <!-- Added 'square-aspect' class for your specific image ratio -->
+                <div class="comparison-container square-aspect" id="comparison-1">
+                    <!-- Bottom Image: White/Clay -->
+                    <img src="assets/slider-clay.jpg" alt="Clay Render" class="comp-img-bottom">
+                    
+                    <!-- Top Image: Final Blue -->
+                    <div class="comp-img-top-wrapper">
+                        <img src="assets/slider-final.jpg" alt="Final Render" class="comp-img-top">
+                    </div>
+                    
+                    <!-- Slider Handle -->
+                    <div class="slider-handle">
+                        <div class="handle-line"></div>
+                        <div class="handle-circle"><i class="fa-solid fa-arrows-left-right"></i></div>
+                        <div class="handle-line"></div>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>'RSA Deatho' Fragrance</h3>
+                    <p>Clay Model vs. Final Studio Render</p>
+                </div>
+            </div>
+
+            <!-- Project 2: Square Glass Bottle -->
+            <div class="project-card">
+                <img src="assets/project-glass.jpg" alt="Glass Texture Study" loading="lazy">
+                <div class="project-info">
+                    <h3>Cosmetic Glass Study</h3>
+                    <p>Refraction, caustics, and liquid simulation.</p>
+                </div>
+            </div>
+
+            <!-- Project 3: Stylized Food/Plate -->
+            <div class="project-card">
+                <img src="assets/project-stylized.jpg" alt="Stylized Composition" loading="lazy">
+                <div class="project-info">
+                    <h3>Abstract Composition</h3>
+                    <p>Material study and procedural texturing.</p>
+                </div>
+            </div>
+
         </div>
     </section>
-    
-    <div id="lightbox">
-        <span id="close-lightbox">&times;</span>
-        <img id="lightbox-img" src="">
-    </div>
 
-    <footer>
-        <div class="social-icons">
-            <i class="fab fa-facebook-f"></i>
-            <i class="fab fa-instagram"></i>
-            <i class="fab fa-twitter"></i> 
-            <i class="fab fa-youtube"></i>
+    <!-- Services Section -->
+    <section id="services" class="section services-bg">
+        <div class="section-header">
+            <h2>Services</h2>
         </div>
-        <div class="footer-email">contact@bsa3dmail.com</div>
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fa-solid fa-shapes"></i>
+                <h3>Product Modeling</h3>
+                <p>Converting 2D concepts into highly detailed 3D geometry optimized for rendering.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-lightbulb"></i>
+                <h3>Photorealistic Rendering</h3>
+                <p>Studio lighting setups designed to make products pop on Amazon, Shopify, and Instagram.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-film"></i>
+                <h3>3D Animation</h3>
+                <p>360 turntables and cinematic reveals to showcase functionality and design.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-left">
+                <h2>Let's create something real.</h2>
+                <p><strong>Bhavesh Ahire</strong></p>
+                <p class="email-link"><a href="mailto:bhaveshahire14700@gmail.com">bhaveshahire14700@gmail.com</a></p>
+                <br>
+                <p class="hardware-note"><i class="fa-solid fa-bolt"></i> Renders powered by <strong>NVIDIA RTX</strong> Workstation.</p>
+            </div>
+            <div class="footer-right">
+                <form class="contact-form">
+                    <input type="text" placeholder="Name" required>
+                    <input type="email" placeholder="Email" required>
+                    <select name="budget" required>
+                        <option value="" disabled selected>Project Budget</option>
+                        <option value="low">$200 - $500</option>
+                        <option value="mid">$500 - $1,500</option>
+                        <option value="high">$1,500+</option>
+                    </select>
+                    <textarea placeholder="Tell me about your project..." rows="4" required></textarea>
+                    <button type="submit" class="btn-primary">Send Request</button>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 BSA Production. All rights reserved.
+        </div>
     </footer>
 
     <script src="script.js"></script>
