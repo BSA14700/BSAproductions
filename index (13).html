@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSA Studio &mdash; Web Design</title>
+    <meta name="description" content="BSA Studio by Bhavesh Ahire. Crafting clean, high-quality websites.">
+    <meta name="author" content="Bhavesh Ahire">
+    <meta property="og:title" content="BSA Studio &mdash; Web Design">
+    <meta property="og:description" content="Websites built with care, by Bhavesh Ahire.">
+    <meta property="og:url" content="https://bsaproduction.in">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Space+Mono:wght@0,400;0,700&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --canvas:    #e8e6e1;
+            --ink:       #000000;
+            --accent:    #ff3300;
+            --ink-soft:  #333333;
+            --ink-muted: #888888;
+            --font-head: 'Cormorant Garamond', serif;
+            --font-body: 'Space Mono', monospace;
+            --ease-lux:  cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--canvas);
+            color: var(--ink);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        /* ── 3D BACKGROUND ── */
+        #webgl {
+            position: fixed; inset: 0; z-index: -1;
+            opacity: 0.12; pointer-events: none;
+        }
+
+        /* ── LOADER ── */
+        #loader {
+            position: fixed; inset: 0; z-index: 999;
+            background: var(--canvas);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 1.5rem;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #loader.hidden { opacity: 0; visibility: hidden; }
+        .loader-logo {
+            font-family: var(--font-head);
+            font-size: 2.5rem; font-style: italic; font-weight: 700;
+        }
+        .loader-bar-wrap {
+            width: 180px; height: 1px;
+            background: rgba(0,0,0,0.12);
+            position: relative; overflow: hidden;
+        }
+        .loader-bar {
+            position: absolute; left: -100%; top: 0;
+            width: 100%; height: 100%;
+            background: var(--accent);
+            animation: loadBar 1.4s var(--ease-lux) forwards;
+        }
+        .loader-text {
+            font-size: 0.52rem; letter-spacing: 0.35em;
+            text-transform: uppercase; color: var(--ink-muted);
+        }
+        @keyframes loadBar { from { left: -100%; } to { left: 0%; } }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            padding: 1.8rem 4rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            background: rgba(232, 230, 225, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            transition: padding 0.3s var(--ease-lux);
+        }
+        nav.scrolled { padding: 1.2rem 4rem; }
+        .logo-wrap { display: flex; flex-direction: column; line-height: 1; text-decoration: none; }
+        .logo-main {
+            font-family: var(--font-head);
+            font-size: 1.4rem; font-style: italic; font-weight: 700;
+            letter-spacing: 0.05em; color: var(--ink);
+        }
+        .logo-sub {
+            font-size: 0.45rem; letter-spacing: 0.3em;
+            text-transform: uppercase; color: var(--ink-muted); margin-top: 3px;
+        }
+        .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+        .nav-links a {
+            color: var(--ink); text-decoration: none;
+            text-transform: uppercase; font-size: 0.62rem;
+            letter-spacing: 0.15em; font-weight: 700;
+            position: relative; transition: color 0.3s;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 1px; background: var(--accent);
+            transition: width 0.3s var(--ease-lux);
+        }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-contact {
+            background: var(--ink) !important; color: var(--canvas) !important;
+            padding: 0.6rem 1.4rem; border-radius: 2px;
+            transition: background 0.3s !important;
+        }
+        .nav-contact::after { display: none !important; }
+        .nav-contact:hover { background: var(--accent) !important; }
+
+        /* ── HERO ── */
+        header {
+            min-height: 88vh;
+            display: flex; flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 5vw 8vh;
+            position: relative; z-index: 2;
+        }
+        .hero-eyebrow {
+            font-size: 0.58rem; letter-spacing: 0.4em;
+            text-transform: uppercase; color: var(--ink-muted);
+            margin-bottom: 1.5rem; opacity: 0; transform: translateY(10px);
+        }
+        .hero-title {
+            font-family: var(--font-head);
+            font-size: clamp(4rem, 11vw, 10rem);
+            line-height: 0.88; letter-spacing: -0.03em;
+            color: var(--ink); margin-bottom: 3rem;
+        }
+        .hero-title span { display: block; overflow: hidden; }
+        .hero-title i { display: block; font-style: normal; transform: translateY(105%); }
+        .hero-bottom {
+            display: flex; justify-content: space-between;
+            align-items: flex-end; gap: 2rem;
+        }
+        .hero-meta {
+            border-left: 2px solid var(--accent);
+            padding-left: 1.5rem; max-width: 400px;
+            opacity: 0; transform: translateY(20px);
+        }
+        .hero-meta p {
+            font-size: 0.82rem; line-height: 1.85;
+            color: var(--ink-soft);
+        }
+        .hero-meta strong { color: var(--ink); }
+        .hero-scroll-hint {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 0.5rem; opacity: 0;
+        }
+        .hero-scroll-hint span {
+            font-size: 0.5rem; letter-spacing: 0.3em;
+            text-transform: uppercase; color: var(--ink-muted);
+            writing-mode: vertical-rl;
+        }
+        .scroll-line {
+            width: 1px; height: 60px;
+            background: linear-gradient(180deg, var(--accent), transparent);
+            animation: scrollDrop 2s ease-in-out infinite;
+        }
+        @keyframes scrollDrop {
+            0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+            50%  { transform: scaleY(1); transform-origin: top; }
+            51%  { transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+        }
+
+        /* ── GALLERY ── */
+        .gallery { padding: 7rem 5vw 12rem; position: relative; z-index: 5; }
+        .gallery-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 6rem; padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        .gallery-title {
+            font-family: var(--font-head);
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 300; letter-spacing: 0.05em;
+        }
+        .gallery-count {
+            font-size: 0.58rem; letter-spacing: 0.3em;
+            text-transform: uppercase; color: var(--ink-muted);
+        }
+        .grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 8rem 5rem; max-width: 1800px; margin: 0 auto;
+        }
+
+        /* ── CARD ── */
+        .card {
+            display: block; text-decoration: none;
+            color: var(--ink); position: relative; perspective: 1200px;
+        }
+        @media (min-width: 901px) { .card:nth-child(even) { margin-top: 10rem; } }
+
+        .card-frame {
+            position: relative; width: 100%; aspect-ratio: 4/3;
+            background: #d8d6d1; overflow: hidden;
+            border-radius: 4px 28px 4px 28px;
+            border: 1px solid rgba(0,0,0,0.08);
+            transition: transform 0.6s var(--ease-lux), box-shadow 0.6s var(--ease-lux);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        .long-scroll-img, .dual-img-1, .dual-img-2 {
+            width: 100%; height: auto; display: block;
+            transform: translateY(0); will-change: transform;
+            transition-property: transform;
+            transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .card-frame.dual-lens { display: flex; gap: 2px; background: var(--ink); }
+        .dual-col { flex: 1; height: 100%; overflow: hidden; background: #d8d6d1; }
+
+        /* Red accent line */
+        .card-frame::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 3px; height: 0; background: var(--accent);
+            z-index: 10; transition: height 0.5s var(--ease-lux);
+        }
+        .card:hover .card-frame::before,
+        .card.active-tap .card-frame::before { height: 100%; }
+
+        /* Hover lift + scroll */
+        .card:hover .card-frame,
+        .card.active-tap .card-frame {
+            transform: translateY(-12px);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.15);
+        }
+        .card:hover .long-scroll-img, .card.active-tap .long-scroll-img,
+        .card:hover .dual-img-1,      .card.active-tap .dual-img-1,
+        .card:hover .dual-img-2,      .card.active-tap .dual-img-2 {
+            transform: translateY(calc(-100% + 370px));
+        }
+
+        /* Arrow link */
+        .card-link-overlay {
+            position: absolute; inset: 0; z-index: 20;
+            display: flex; align-items: flex-end; justify-content: flex-end;
+            padding: 1.2rem; opacity: 0; transition: opacity 0.4s;
+        }
+        .card:hover .card-link-overlay { opacity: 1; }
+        .card-link-icon {
+            background: var(--accent); color: #fff;
+            width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; text-decoration: none;
+            box-shadow: 0 4px 20px rgba(255,51,0,0.45);
+            transition: transform 0.3s;
+        }
+        .card-link-icon:hover { transform: scale(1.1); }
+
+        /* Card info */
+        .card-info {
+            padding-top: 1.4rem;
+            display: flex; justify-content: space-between; align-items: flex-start;
+        }
+        .card-title {
+            font-family: var(--font-head);
+            font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+            font-weight: 600; line-height: 1.1;
+            margin-bottom: 0.4rem;
+        }
+        .card-tags {
+            font-size: 0.62rem; text-transform: uppercase;
+            color: var(--ink-muted); letter-spacing: 0.1em;
+        }
+        .card-num {
+            font-family: var(--font-head); font-style: italic;
+            color: var(--accent); font-size: 1.4rem; font-weight: 700;
+            flex-shrink: 0; margin-left: 1rem;
+        }
+
+        /* Image fallback */
+        .img-placeholder {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 0.8rem;
+            color: var(--ink-muted); background: #d0cec9;
+        }
+        .img-placeholder p { font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase; }
+
+        /* ── ABOUT ── */
+        .about-strip {
+            position: relative; z-index: 3;
+            padding: 8rem 5vw;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 6rem; align-items: center;
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+        .about-heading {
+            font-family: var(--font-head);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 300; line-height: 1.1; letter-spacing: -0.02em;
+        }
+        .about-heading em { font-style: italic; color: var(--accent); }
+        .about-right p {
+            font-size: 0.82rem; line-height: 1.9;
+            color: var(--ink-soft); margin-bottom: 1.4rem;
+        }
+        .about-right strong { color: var(--ink); }
+
+        /* ── CONTACT ── */
+        .contact-section {
+            position: relative; z-index: 3;
+            padding: 8rem 5vw; background: var(--ink); text-align: center;
+        }
+        .contact-label {
+            font-size: 0.58rem; letter-spacing: 0.4em;
+            text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 2rem;
+        }
+        .contact-heading {
+            font-family: var(--font-head);
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300; font-style: italic;
+            color: #fff; line-height: 1.05; margin-bottom: 1rem;
+        }
+        .contact-sub {
+            font-size: 0.78rem; color: rgba(255,255,255,0.38);
+            margin-bottom: 3.5rem; line-height: 1.85;
+        }
+        .contact-email {
+            display: inline-flex; align-items: center; gap: 0.8rem;
+            font-family: var(--font-head);
+            font-size: clamp(1rem, 2.5vw, 1.6rem);
+            color: #fff; text-decoration: none;
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 0.3rem; transition: color 0.3s;
+        }
+        .contact-email:hover { color: var(--accent); }
+
+        /* ── FOOTER ── */
+        footer {
+            position: relative; z-index: 3;
+            background: var(--ink); padding: 2rem 4rem;
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        footer span {
+            font-size: 0.52rem; letter-spacing: 0.2em;
+            text-transform: uppercase; color: rgba(255,255,255,0.25);
+        }
+        .footer-logo {
+            font-family: var(--font-head); font-style: italic;
+            font-size: 1rem; color: rgba(255,255,255,0.35);
+        }
+        footer a { color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.3s; }
+        footer a:hover { color: var(--accent); }
+
+        /* ── MOBILE ── */
+        @media (max-width: 900px) {
+            nav { padding: 1.4rem 1.5rem; }
+            nav.scrolled { padding: 1rem 1.5rem; }
+            .nav-item-hide { display: none; }
+            header { padding: 0 1.5rem 7vh; }
+            .hero-bottom { flex-direction: column; align-items: flex-start; }
+            .hero-scroll-hint { display: none; }
+            .grid { grid-template-columns: 1fr; gap: 5rem; }
+            .gallery { padding: 5rem 1.5rem 8rem; }
+            .gallery-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .about-strip { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 1.5rem; }
+            .contact-section { padding: 6rem 1.5rem; }
+            footer { padding: 1.5rem; flex-direction: column; gap: 0.8rem; text-align: center; }
+            .card-frame::after {
+                content: 'TAP TO PREVIEW';
+                position: absolute; bottom: 16px; right: 16px;
+                background: var(--accent); color: #fff;
+                font-family: var(--font-body); font-size: 0.48rem;
+                padding: 6px 14px; border-radius: 50px;
+                font-weight: 700; letter-spacing: 0.12em;
+                z-index: 6; pointer-events: none;
+                opacity: 1; transition: opacity 0.3s;
+            }
+            .card.active-tap .card-frame::after { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div id="loader">
+        <div class="loader-logo">BSA.</div>
+        <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+        <p class="loader-text">Web Design by Bhavesh Ahire</p>
+    </div>
+
+    <canvas id="webgl"></canvas>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <a href="#" class="logo-wrap">
+            <span class="logo-main">BSA Studio.</span>
+            <span class="logo-sub">bsaproduction.in</span>
+        </a>
+        <div class="nav-links">
+            <a href="#work" class="nav-item-hide">Work</a>
+            <a href="#about" class="nav-item-hide">About</a>
+            <a href="mailto:bhaveshahire14700@gmail.com" class="nav-contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header>
+        <p class="hero-eyebrow">Bhavesh Ahire &nbsp;&mdash;&nbsp; Web Designer</p>
+        <h1 class="hero-title">
+            <span><i>Websites</i></span>
+            <span><i>built with</i></span>
+            <span><i>care.</i></span>
+        </h1>
+        <div class="hero-bottom">
+            <div class="hero-meta">
+                <p>
+                    I'm <strong>Bhavesh Ahire</strong>, a web designer based at <strong>BSA Studio</strong>.
+                    I build clean, thoughtful websites &mdash; focused on getting every detail right.
+                </p>
+            </div>
+            <div class="hero-scroll-hint">
+                <span>Scroll</span>
+                <div class="scroll-line"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- WORK -->
+    <section class="gallery" id="work">
+        <div class="gallery-header">
+            <h2 class="gallery-title">Selected Work</h2>
+            <span class="gallery-count">04 Projects</span>
+        </div>
+        <div class="grid">
+
+            <!-- 01 -->
+            <div class="card" onclick="this.classList.toggle('active-tap')">
+                <div class="card-frame">
+                    <img src="assets/aura-full.png" class="long-scroll-img" alt="Aura Noir D'Or"
+                         onerror="this.outerHTML='<div class=\'img-placeholder\'><p>aura-full.png</p></div>'">
+                    <div class="card-link-overlay">
+                        <a href="https://bsa14700.github.io/Luxury-aura-perfume/" target="_blank" rel="noopener"
+                           class="card-link-icon" aria-label="View live site">&#8599;</a>
+                    </div>
+                </div>
+                <a href="https://bsa14700.github.io/Luxury-aura-perfume/" target="_blank" rel="noopener"
+                   style="position:absolute;inset:0;z-index:15;" aria-label="Open Aura project"></a>
+                <div class="card-info">
+                    <div>
+                        <h2 class="card-title">Aura: Noir D'Or</h2>
+                        <div class="card-tags">E-Commerce &nbsp;&middot;&nbsp; Luxury &nbsp;&middot;&nbsp; Physics</div>
+                    </div>
+                    <span class="card-num">01</span>
+                </div>
+            </div>
+
+            <!-- 02 -->
+            <div class="card" onclick="this.classList.toggle('active-tap')">
+                <div class="card-frame dual-lens">
+                    <div class="dual-col">
+                        <img src="assets/luxe-big1.png" class="dual-img-1" alt="Luxe Systems left"
+                             onerror="this.outerHTML='<div class=\'img-placeholder\'><p>luxe-big1.png</p></div>'">
+                    </div>
+                    <div class="dual-col">
+                        <img src="assets/luxe-big2.png" class="dual-img-2" alt="Luxe Systems right"
+                             onerror="this.outerHTML='<div class=\'img-placeholder\'><p>luxe-big2.png</p></div>'">
+                    </div>
+                    <div class="card-link-overlay">
+                        <a href="https://bsa14700.github.io/Perfume-website/" target="_blank" rel="noopener"
+                           class="card-link-icon" aria-label="View live site">&#8599;</a>
+                    </div>
+                </div>
+                <a href="https://bsa14700.github.io/Perfume-website/" target="_blank" rel="noopener"
+                   style="position:absolute;inset:0;z-index:15;" aria-label="Open Luxe project"></a>
+                <div class="card-info">
+                    <div>
+                        <h2 class="card-title">Luxe Systems</h2>
+                        <div class="card-tags">Fragrance &nbsp;&middot;&nbsp; Product &nbsp;&middot;&nbsp; UI</div>
+                    </div>
+                    <span class="card-num">02</span>
+                </div>
+            </div>
+
+            <!-- 03 -->
+            <div class="card" onclick="this.classList.toggle('active-tap')">
+                <div class="card-frame">
+                    <img src="assets/alex-full.png" class="long-scroll-img" alt="Alex Identity"
+                         onerror="this.outerHTML='<div class=\'img-placeholder\'><p>alex-full.png</p></div>'">
+                    <div class="card-link-overlay">
+                        <a href="https://bsa14700.github.io/alex-wesite/" target="_blank" rel="noopener"
+                           class="card-link-icon" aria-label="View live site">&#8599;</a>
+                    </div>
+                </div>
+                <a href="https://bsa14700.github.io/alex-wesite/" target="_blank" rel="noopener"
+                   style="position:absolute;inset:0;z-index:15;" aria-label="Open Alex project"></a>
+                <div class="card-info">
+                    <div>
+                        <h2 class="card-title">Alex Identity</h2>
+                        <div class="card-tags">Portfolio &nbsp;&middot;&nbsp; Motion &nbsp;&middot;&nbsp; WebGL</div>
+                    </div>
+                    <span class="card-num">03</span>
+                </div>
+            </div>
+
+            <!-- 04 -->
+            <div class="card" onclick="this.classList.toggle('active-tap')">
+                <div class="card-frame">
+                    <img src="assets/leo-full.png" class="long-scroll-img" alt="Leo Character"
+                         onerror="this.outerHTML='<div class=\'img-placeholder\'><p>leo-full.png</p></div>'">
+                    <div class="card-link-overlay">
+                        <a href="https://bsa14700.github.io/Character-website/" target="_blank" rel="noopener"
+                           class="card-link-icon" aria-label="View live site">&#8599;</a>
+                    </div>
+                </div>
+                <a href="https://bsa14700.github.io/Character-website/" target="_blank" rel="noopener"
+                   style="position:absolute;inset:0;z-index:15;" aria-label="Open Leo project"></a>
+                <div class="card-info">
+                    <div>
+                        <h2 class="card-title">Leo: Character</h2>
+                        <div class="card-tags">Gaming &nbsp;&middot;&nbsp; Character &nbsp;&middot;&nbsp; Grid</div>
+                    </div>
+                    <span class="card-num">04</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about-strip" id="about">
+        <div>
+            <h2 class="about-heading">
+                Learning fast.<br>
+                <em>Building real.</em>
+            </h2>
+        </div>
+        <div class="about-right">
+            <p>
+                I'm <strong>Bhavesh Ahire</strong>, a web designer still early in my journey but serious about the craft.
+                Right now I'm focused entirely on building websites &mdash; studying what makes them good
+                and putting that into practice with every project.
+            </p>
+            <p>
+                The work here is honest. These are real sites I've designed and built, hosted on GitHub Pages.
+                More is coming as I keep learning.
+            </p>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact-section" id="contact">
+        <p class="contact-label">// Get In Touch</p>
+        <h2 class="contact-heading">Got a project?<br>Let's talk.</h2>
+        <p class="contact-sub">
+            Open to feedback, collabs, or just a conversation.<br>
+            Drop me a message anytime.
+        </p>
+        <a href="mailto:bhaveshahire14700@gmail.com" class="contact-email">
+            bhaveshahire14700@gmail.com &nbsp;&#8599;
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span>&copy; 2026 Bhavesh Ahire</span>
+        <span class="footer-logo">BSA.</span>
+        <span><a href="https://bsaproduction.in">bsaproduction.in</a></span>
+    </footer>
+
+    <script>
+    // ── LOADER ──
+    window.addEventListener('load', () => {
+        setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 1600);
+    });
+
+    // ── NAV SHRINK ──
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ── SCROLL DURATION based on image height ──
+    window.addEventListener('load', () => {
+        document.querySelectorAll('.long-scroll-img, .dual-img-1, .dual-img-2').forEach(img => {
+            const h = img.naturalHeight || 1200;
+            let d = Math.max(4, h / 380);
+            if (img.classList.contains('dual-img-2')) d += 1.5;
+            img.style.transitionDuration = d + 's';
+        });
+    });
+
+    // ── GSAP ──
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.to('.hero-title i',     { y: 0, duration: 1.6, stagger: 0.12, ease: 'power4.out', delay: 1.7 });
+    gsap.to('.hero-eyebrow',     { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out', delay: 2.0 });
+    gsap.to('.hero-meta',        { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out', delay: 2.2 });
+    gsap.to('.hero-scroll-hint', { opacity: 1, duration: 1, ease: 'power2.out', delay: 2.7 });
+
+    gsap.utils.toArray('.card').forEach((card, i) => {
+        gsap.fromTo(card,
+            { opacity: 0, y: 50 },
+            { opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+              delay: (i % 2) * 0.12,
+              scrollTrigger: { trigger: card, start: 'top 87%' } }
+        );
+    });
+    gsap.from('.about-heading', {
+        opacity: 0, x: -40, duration: 1.2, ease: 'power3.out',
+        scrollTrigger: { trigger: '.about-strip', start: 'top 78%' }
+    });
+    gsap.from('.about-right', {
+        opacity: 0, x: 40, duration: 1.2, ease: 'power3.out', delay: 0.15,
+        scrollTrigger: { trigger: '.about-strip', start: 'top 78%' }
+    });
+
+    // ── THREE.JS BACKGROUND ──
+    const canvas   = document.querySelector('#webgl');
+    const scene    = new THREE.Scene();
+    scene.background = new THREE.Color(0xe8e6e1);
+    scene.fog        = new THREE.Fog(0xe8e6e1, 12, 55);
+    const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 100);
+    camera.position.z = 32;
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+    const mesh = new THREE.Mesh(
+        new THREE.TorusKnotGeometry(9, 2.2, 160, 20),
+        new THREE.MeshPhysicalMaterial({
+            color: 0xffffff, metalness: 0.4, roughness: 0.08,
+            clearcoat: 1.0, clearcoatRoughness: 0.05
+        })
+    );
+    scene.add(mesh);
+    const dir = new THREE.DirectionalLight(0xffffff, 2);
+    dir.position.set(6, 10, 8); scene.add(dir);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+    const fill = new THREE.DirectionalLight(0xff3300, 0.25);
+    fill.position.set(-10, -5, 5); scene.add(fill);
+
+    let mX = 0, mY = 0;
+    document.addEventListener('mousemove', e => {
+        mX = (e.clientX / innerWidth  - 0.5) * 0.8;
+        mY = (e.clientY / innerHeight - 0.5) * 0.8;
+    });
+    (function tick() {
+        requestAnimationFrame(tick);
+        mesh.rotation.x += 0.0015 + mY * 0.03;
+        mesh.rotation.y += 0.002  + mX * 0.03;
+        renderer.render(scene, camera);
+    })();
+    window.addEventListener('resize', () => {
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(innerWidth, innerHeight);
+    });
+    </script>
+</body>
+</html>
