@@ -388,7 +388,6 @@
 </head>
 <body>
 
-    <!-- LOADER -->
     <div id="loader">
         <div class="loader-logo">BSA.</div>
         <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
@@ -397,7 +396,6 @@
 
     <canvas id="webgl"></canvas>
 
-    <!-- NAV -->
     <nav id="nav">
         <a href="#" class="logo-wrap">
             <span class="logo-main">BSA Studio.</span>
@@ -410,7 +408,6 @@
         </div>
     </nav>
 
-    <!-- HERO -->
     <header>
         <p class="hero-eyebrow">Bhavesh Ahire &nbsp;&mdash;&nbsp; Web Designer</p>
         <h1 class="hero-title">
@@ -432,7 +429,6 @@
         </div>
     </header>
 
-    <!-- WORK -->
     <section class="gallery" id="work">
         <div class="gallery-header">
             <h2 class="gallery-title">Selected Work</h2>
@@ -440,7 +436,6 @@
         </div>
         <div class="grid">
 
-            <!-- 01 -->
             <div class="card" onclick="this.classList.toggle('active-tap')">
                 <div class="card-frame">
                     <img src="assets/aura-full.png" class="long-scroll-img" alt="Aura Noir D'Or"
@@ -461,7 +456,6 @@
                 </div>
             </div>
 
-            <!-- 02 -->
             <div class="card" onclick="this.classList.toggle('active-tap')">
                 <div class="card-frame dual-lens">
                     <div class="dual-col">
@@ -488,7 +482,6 @@
                 </div>
             </div>
 
-            <!-- 03 -->
             <div class="card" onclick="this.classList.toggle('active-tap')">
                 <div class="card-frame">
                     <img src="assets/alex-full.png" class="long-scroll-img" alt="Alex Identity"
@@ -509,7 +502,6 @@
                 </div>
             </div>
 
-            <!-- 04 -->
             <div class="card" onclick="this.classList.toggle('active-tap')">
                 <div class="card-frame">
                     <img src="assets/leo-full.png" class="long-scroll-img" alt="Leo Character"
@@ -533,7 +525,6 @@
         </div>
     </section>
 
-    <!-- ABOUT -->
     <section class="about-strip" id="about">
         <div>
             <h2 class="about-heading">
@@ -554,7 +545,6 @@
         </div>
     </section>
 
-    <!-- CONTACT -->
     <section class="contact-section" id="contact">
         <p class="contact-label">// Get In Touch</p>
         <h2 class="contact-heading">Got a project?<br>Let's talk.</h2>
@@ -567,7 +557,6 @@
         </a>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <span>&copy; 2026 Bhavesh Ahire</span>
         <span class="footer-logo">BSA.</span>
@@ -576,7 +565,7 @@
 
     <script>
     // ── LOADER ──
-    window.addEventListener('load', () => {
+    document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 1600);
     });
 
